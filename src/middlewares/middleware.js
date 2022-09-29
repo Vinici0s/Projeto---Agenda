@@ -1,3 +1,5 @@
+const { response } = require("express");
+
 exports.middlewareGlobal = (request, response, next) => {
     response.locals.errors = request.flash('errors');
     response.locals.success = request.flash('success');
@@ -14,5 +16,14 @@ exports.checkCsrfError = (error, request, response, next) => {
 
 exports.csrfMiddleware = (request, response, next) => {
     response.locals.csrfToken = request.csrfToken();
+    next();
+};
+
+exports.loginRequired = (request, response, next) => {
+    if(!request.session.user){
+        request.flash('errors', 'Você precisa estar logado para acessar a agenda.');
+        request.session.save(() => response.redirect('/'));
+        return;
+    }
     next();
 };
