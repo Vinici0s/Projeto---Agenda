@@ -5,7 +5,7 @@ exports.middlewareGlobal = (request, response, next) => {
     response.locals.success = request.flash('success');
     response.locals.user = request.session.user;
     next();
-};
+}; 
 
 exports.checkCsrfError = (error, request, response, next) => {
     if(error) {
